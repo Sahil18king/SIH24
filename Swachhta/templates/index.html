@@ -1,158 +1,209 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    {% load static %}
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="{% static 'js/script.js' %}"></script>
-
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/desktop_1.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="csrf-token" content="{% csrf_token %}">
 </head>
-<body class="home">
-    <div class="container-fluid display-table">
-        <div class="row display-table-row">
-            <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
-                <div class="logo">
-                    <a href="home.html"><img src="http://jskrishna.com/work/merkury/images/logo.png" alt="merkery_logo" class="hidden-xs hidden-sm">
-                        <img src="http://jskrishna.com/work/merkury/images/circle-logo.png" alt="merkery_logo" class="visible-xs visible-sm circle-logo">
-                    </a>
-                </div>
-                <div class="navi">
-                    <ul>
-                        <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Home</span></a></li>
-                        <li><a href="#"><i class="fa fa-tasks" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Workflow</span></a></li>
-                        <li><a href="#"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Statistics</span></a></li>
-                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Calendar</span></a></li>
-                        <li><a href="#"><i class="fa fa-calendar" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Users</span></a></li>
-                        <li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Setting</span></a></li>
-                        <li><a href="{% url 'login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Login</span></a></li>
 
-                    </ul>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{% static 'assets/images/swachta.png' %}" alt="Swachhta">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" id="dashboard-link" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <!-- Other links -->
+            <li><a href="#" id="images-link"><i class="fas fa-user"></i> Images</a>
+                <ul class="sub-menu">
+                    <li><a href="#" id="add-photo-link">Add Photo</a></li>
+                    <li><a href="#" id="upload-photo-link">Upload Photo</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h2 id="page-title">Dashboard</h2>
+            <div class="user">
+                <i class="fas fa-user-circle"></i> Admin
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Default Dashboard Content -->
+            <div id="dashboard-content" class="content-section active">
+                <div class="card-container">
+                    <div class="card">Continents</div>
+                    <!-- Other cards -->
                 </div>
             </div>
-            <div class="col-md-10 col-sm-11 display-table-cell v-align">
-                <div class="row">
-                    <header>
-                        <div class="col-md-7">
-                            <nav class="navbar-default pull-left">
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas" data-target="#side-menu" aria-expanded="false">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                </div>
-                            </nav>
-                            <div class="search hidden-xs hidden-sm">
-                                <input type="text" placeholder="Search" id="search">
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="header-rightside">
-                                <ul class="list-inline header-top pull-right">
-                                    <li class="hidden-xs"><a href="#" class="add-project" data-toggle="modal" data-target="#add_project">Add Project</a></li>
-                                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
-                                    <li>
-                                        <a href="#" class="icon-info">
-                                            <i class="fa fa-bell" aria-hidden="true"></i>
-                                            <span class="label label-primary">3</span>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://jskrishna.com/work/merkury/images/user-pic.jpg" alt="user">
-                                            <b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <div class="navbar-content">
-                                                    <span>JS Krishna</span>
-                                                    <p class="text-muted small">
-                                                        me@jskrishna.com
-                                                    </p>
-                                                    <div class="divider">
-                                                    </div>
-                                                    <a href="#" class="view btn-sm active">View Profile</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </header>
-                </div>
-                <div class="user-dashboard">
-                    <h1>Hello, JS</h1>
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
-                            <div class="sales">
-                                <h2>Your Sale</h2>
 
-                                <div class="btn-group">
-                                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span>Period:</span> Last Year
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a href="#">2012</a>
-                                        <a href="#">2014</a>
-                                        <a href="#">2015</a>
-                                        <a href="#">2016</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-7 col-xs-12 gutter">
-                            <div class="sales report">
-                                <h2>Report</h2>
-                                <div class="btn-group">
-                                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span>Period:</span> Last Year
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a href="#">2012</a>
-                                        <a href="#">2014</a>
-                                        <a href="#">2015</a>
-                                        <a href="#">2016</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Camera Access Section -->
+            <div id="camera-content" class="content-section" style="display: none;">
+                <h2>Take a Photo</h2>
+                <button id="open-webcam" class="btn btn-primary">Open Camera</button>
+                <button id="close-webcam" class="btn btn-secondary" style="display: none;">Close Camera</button>
+                <div id="webcam-container">
+                    <video id="video" width="640" height="480" autoplay style="display: none;"></video>
+                    <button id="snap" class="btn btn-success" style="display: none;">Capture Photo</button>
+                    <div id="output"></div>
+                    <button id="submit" class="btn btn-primary" style="display: none;">Submit</button>
                 </div>
-                <!-- Camera Access Button -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2>Take a Photo</h2>
-                        <input type="file" accept="image/*" capture="camera" class="btn btn-primary" />
-                    </div>
-                </div>
+            </div>
+
+            <!-- Upload Photo Section -->
+            <div id="upload-content" class="content-section" style="display: none;">
+                <h2>Upload Photo</h2>
+                <input type="file" id="image-upload" accept="image/*" />
+                <div id="upload-output"></div>
             </div>
         </div>
     </div>
+    <script>
 
-    <!-- Modal -->
-    <div id="add_project" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header login-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Add Project</h4>
-                </div>
-                <div class="modal-body">
-                    <input type="text" placeholder="Project Title" name="name">
-                    <input type="text" placeholder="Post of Post" name="mail">
-                    <input type="text" placeholder="Author" name="password">
-                    <textarea placeholder="Description"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="cancel" data-dismiss="modal">Close</button>
-                    <button type="button" class="add-project" data-dismiss="modal">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
+        const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : '';
+        // Safely getting the CSRF token
+
+
+        // Switching between sections
+        const dashboardLink = document.getElementById('dashboard-link');
+        const addPhotoLink = document.getElementById('add-photo-link');
+        const uploadPhotoLink = document.getElementById('upload-photo-link');
+        const dashboardContent = document.getElementById('dashboard-content');
+        const cameraContent = document.getElementById('camera-content');
+        const uploadContent = document.getElementById('upload-content');
+        const pageTitle = document.getElementById('page-title');
+
+        dashboardLink.addEventListener('click', function () {
+            pageTitle.textContent = 'Dashboard';
+            dashboardContent.style.display = 'block';
+            cameraContent.style.display = 'none';
+            uploadContent.style.display = 'none';
+        });
+
+        addPhotoLink.addEventListener('click', function () {
+            pageTitle.textContent = 'Add Photo';
+            dashboardContent.style.display = 'none';
+            uploadContent.style.display = 'none';
+            cameraContent.style.display = 'block';
+        });
+
+        uploadPhotoLink.addEventListener('click', function () {
+            pageTitle.textContent = 'Upload Photo';
+            dashboardContent.style.display = 'none';
+            cameraContent.style.display = 'none';
+            uploadContent.style.display = 'block';
+        });
+
+        // Camera functionality
+        const video = document.getElementById('video');
+        const snapButton = document.getElementById('snap');
+        const openWebcamButton = document.getElementById('open-webcam');
+        const closeWebcamButton = document.getElementById('close-webcam');
+        const submitButton = document.getElementById('submit');
+
+        openWebcamButton.addEventListener('click', function () {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                    video.srcObject = stream;
+                    video.play();
+                    video.style.display = 'block';
+                    snapButton.style.display = 'block';
+                    openWebcamButton.style.display = 'none';
+                    closeWebcamButton.style.display = 'block';
+                }).catch(function (error) {
+                    alert("Webcam not accessible or not allowed.");
+                });
+            }
+        });
+
+        closeWebcamButton.addEventListener('click', function () {
+            const stream = video.srcObject;
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+            video.style.display = 'none';
+            snapButton.style.display = 'none';
+            openWebcamButton.style.display = 'block';
+            closeWebcamButton.style.display = 'none';
+        });
+
+        snapButton.addEventListener('click', function () {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas to Blob and display the captured photo
+            canvas.toBlob(function (blob) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(blob);
+                document.getElementById('output').innerHTML = ''; // Clear previous images
+                document.getElementById('output').appendChild(img);
+
+                // Show submit button
+                submitButton.style.display = 'block';
+
+                // Save the blob in a global variable for later use
+                window.capturedBlob = blob;
+            });
+        });
+
+        submitButton.addEventListener('click', function () {
+            navigator.geolocation.getCurrentPosition(position => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                const formData = new FormData();
+                formData.append('image', window.capturedBlob);
+                formData.append('location', 'Your Location'); // Replace with actual location if available
+                formData.append('latitude', latitude);
+                formData.append('longitude', longitude);
+                formData.append('user', '1'); // Replace with actual user ID if available
+
+                // Log formData content for debugging
+                console.log('FormData:', ...formData.entries());
+
+                fetch('{% url "capture_image" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': csrfToken // Include CSRF token in headers
+                    }
+                })
+                    .then(response => {
+                        console.log('Response Status:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Response Data:', data);
+                        if (data.status === "success") {
+                            alert('Photo submitted successfully!');
+                            submitButton.style.display = 'none'; // Hide submit button after successful submission
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }, error => {
+                console.error('Error getting location:', error);
+            });
+        });
+    </script>
+
 </body>
+
 </html>
