@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webcam Capture</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Webcam Screenshot App</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Capture Photo</button>
+    <div id="output"></div>
+
+    <script>
+        const video = document.getElementById('video');
+
+        // Get access to the webcam
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                video.srcObject = stream;
+                video.play();
+            });
+        }
+
+        document.getElementById('snap').addEventListener('click', function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas to Blob
+            canvas.toBlob(function(blob) {
+                const formData = new FormData();
+                formData.append('img_counter', new Date().getTime());
+                formData.append('image', blob);
+
+                $.ajax({
+                    url: '{% url "capture_image" %}',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if (data.status === "success") {
+                            const img = document.createElement('img');
+                            img.src = data.image_url;
+                            document.getElementById('output').appendChild(img);
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
