@@ -39,7 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 'blog',
 ]
+
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_ACCESS_KEY_ID = 'your-access-key'
+# AWS_SECRET_ACCESS_KEY = 'your-secret-key'
+# AWS_STORAGE_BUCKET_NAME = 'your-bucket-name'
+# AWS_S3_FILE_OVERWRITE = False  # Set to False if you want to avoid overwriting files with the same name
+# AWS_DEFAULT_ACL = None  # Set to None to disable default ACL (PublicRead is default)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,6 +80,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "Swachhta.wsgi.application"
 
+CSRF_COOKIE_SECURE = False  # True if using HTTPS
+CSRF_COOKIE_HTTPONLY = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -120,6 +130,7 @@ USE_TZ = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

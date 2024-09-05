@@ -8,6 +8,8 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <meta name="csrf-token" content="{% csrf_token %}">
 </head>
 
@@ -70,9 +72,8 @@
     <script>
 
         const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
-        const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : '';
+        const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('value') : '';
         // Safely getting the CSRF token
-
 
         // Switching between sections
         const dashboardLink = document.getElementById('dashboard-link');
@@ -160,48 +161,137 @@
             });
         });
 
+        // const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+        // const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : '';
+
+        // submitButton.addEventListener('click', function () {
+        //     navigator.geolocation.getCurrentPosition(position => {
+        //         const latitude = position.coords.latitude;
+        //         const longitude = position.coords.longitude;
+
+        //         const formData = new FormData();
+        //         formData.append('image', window.capturedBlob);
+        //         formData.append('location', 'Your Location');
+        //         formData.append('latitude', latitude);
+        //         formData.append('longitude', longitude);
+        //         formData.append('user', '1');
+
+        //         fetch('{% url "capture_image" %}', {
+        //             method: 'POST',
+        //             body: formData,
+        //             headers: {
+        //                 'X-CSRFToken': csrfToken // Include CSRF token in headers
+        //             }
+        //         })
+        //             .then(response => {
+        //                 console.log('Response Status:', response.status);
+        //                 return response.json();
+        //             })
+        //             .then(data => {
+        //                 console.log('Response Data:', data);
+        //                 if (data.status === "success") {
+        //                     alert('Photo submitted successfully!');
+        //                     submitButton.style.display = 'none';
+        //                 } else {
+        //                     alert(data.message);
+        //                 }
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error:', error);
+        //             });
+        //     }, error => {
+        //         console.error('Error getting location:', error);
+        //     });
+        // });
+
+        // Debugging: Ensure the CSRF token is being retrieved correctly
+
+        // Submit button event listener using Axios
+        // submitButton.addEventListener('click', function () {
+        //     navigator.geolocation.getCurrentPosition(position => {
+        //         const latitude = position.coords.latitude;
+        //         const longitude = position.coords.longitude;
+
+        //         const formData = new FormData();
+        //         formData.append('image', window.capturedBlob);
+        //         formData.append('location', 'Your Location'); // Replace with actual location if available
+        //         formData.append('latitude', latitude);
+        //         formData.append('longitude', longitude);
+        //         formData.append('user', '1'); // Replace with actual user ID if available
+
+        //         // Log formData content for debugging
+        //         console.log('FormData:', ...formData.entries());
+
+        //         // Configure Axios to include CSRF token
+        //         fetch('{% url "capture_image" %}', {
+        //             method: 'POST',
+        //             body: formData,
+        //             headers: {
+        //                 'X-CSRFToken': csrfToken // Include CSRF token in headers
+        //             }
+        //         })
+        //             .then(response => {
+        //                 console.log('Response Status:', response.status);
+        //                 return response.json(); // Parse the JSON response
+        //             })
+        //             .then(data => {
+        //                 console.log('Response Data:', data);
+        //                 if (data.status === "success") {
+        //                     alert('Photo submitted successfully!');
+        //                     submitButton.style.display = 'none'; // Hide submit button after successful submission
+        //                 } else {
+        //                     alert(data.message);
+        //                 }
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error:', error);
+        //             });
+
+        //     }, error => {
+        //         console.error('Error getting location:', error);
+        //     });
+        // });
+
+
         submitButton.addEventListener('click', function () {
             navigator.geolocation.getCurrentPosition(position => {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
                 const formData = new FormData();
-                formData.append('image', window.capturedBlob);
+                formData.append('image', window.capturedBlob, 'captured_image.png');
                 formData.append('location', 'Your Location'); // Replace with actual location if available
                 formData.append('latitude', latitude);
                 formData.append('longitude', longitude);
                 formData.append('user', '1'); // Replace with actual user ID if available
 
-                // Log formData content for debugging
-                console.log('FormData:', ...formData.entries());
-
-                fetch('{% url "capture_image" %}', {
-                    method: 'POST',
-                    body: formData,
+                // Configure Axios to include CSRF token
+                axios.post('{% url "capture_image" %}', formData, {
                     headers: {
-                        'X-CSRFToken': csrfToken // Include CSRF token in headers
+                        'X-CSRFToken': csrfToken, // Include CSRF token in headers
+                        'Content-Type': 'multipart/form-data' // Ensure the content type is set
                     }
                 })
                     .then(response => {
                         console.log('Response Status:', response.status);
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Response Data:', data);
-                        if (data.status === "success") {
-                            alert('Photo submitted successfully!');
+                        if (response.data.status === "success") {
+                            alert('Photo submitted successfully! Processing the image.');
                             submitButton.style.display = 'none'; // Hide submit button after successful submission
+                            // Optionally, handle the result from the ML model if needed
                         } else {
-                            alert(data.message);
+                            alert(response.data.message);
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
                     });
+
             }, error => {
                 console.error('Error getting location:', error);
             });
         });
+
+
     </script>
 
 </body>

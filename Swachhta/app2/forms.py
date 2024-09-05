@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
+from .models import SaveImage
 
 class LoginForm(forms.Form):
     email = forms.EmailField()
@@ -12,3 +13,8 @@ class LoginForm(forms.Form):
         if not user:
             raise forms.ValidationError("Invalid login credentials")
         return self.cleaned_data
+
+class UploadImageForm(forms.ModelForm):
+    class Meta:
+        model = SaveImage
+        fields = ['image']
