@@ -1,2 +1,0 @@
-# SIH24
- Hackthon
